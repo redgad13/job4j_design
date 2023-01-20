@@ -30,8 +30,8 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        T oldValue = container[index];
         Objects.checkIndex(index, size);
+        T oldValue = container[index];
         container[index] = newValue;
         return oldValue;
     }
@@ -39,22 +39,18 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override
     public T remove(int index) {
         modCount++;
-        if (index >= 0) {
-            T old = container[index];
-            System.arraycopy(container, index + 1, container, index, container.length - index - 1);
-            container[container.length - 1] = null;
-            size--;
-            return old;
-        } else {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
+        T old = container[index];
+        System.arraycopy(container, index + 1, container, index, container.length - index - 1);
+        container[container.length - 1] = null;
+        size--;
+        return old;
+
     }
 
     @Override
     public T get(int index) {
-        if (index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         return container[index];
     }
 
