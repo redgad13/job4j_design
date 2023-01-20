@@ -17,7 +17,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override
     public void add(T value) {
         if (size >= container.length) {
-            grow();
+           container = grow();
         }
         modCount++;
         container[size++] = value;
@@ -65,7 +65,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             int point;
             final int expectedModCount = modCount;
 
