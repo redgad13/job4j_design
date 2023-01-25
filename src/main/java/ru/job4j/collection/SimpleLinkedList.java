@@ -17,14 +17,12 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
         Node<E> current = head;
         if (head == null) {
             head = newNode;
-            modCount++;
-            size++;
-            return;
+        } else {
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
         }
-        while (current.next != null) {
-            current = current.next;
-        }
-        current.next = newNode;
         modCount++;
         size++;
     }
