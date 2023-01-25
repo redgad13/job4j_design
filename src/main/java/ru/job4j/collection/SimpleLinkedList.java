@@ -31,12 +31,10 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     public E get(int index) {
         Objects.checkIndex(index, size);
         Node<E> current = head;
-        E value = null;
-        for (int i = 0; i <= index; i++) {
-            value = current.item;
+        for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        return value;
+        return current.item;
     }
 
     @Override
