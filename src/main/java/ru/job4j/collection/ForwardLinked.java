@@ -28,12 +28,10 @@ public class ForwardLinked<T> implements Iterable<T> {
     public T get(int index) {
         Objects.checkIndex(index, size);
         Node<T> current = head;
-        T value = null;
-        for (int i = 0; i <= index; i++) {
-            value = current.item;
+        for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        return value;
+        return current.item;
     }
 
     public T deleteFirst() {
@@ -44,7 +42,7 @@ public class ForwardLinked<T> implements Iterable<T> {
         Node<T> newHead = head.next;
         head.next = null;
         head = newHead;
-        size --;
+        size--;
         modCount++;
         return rsl;
     }
