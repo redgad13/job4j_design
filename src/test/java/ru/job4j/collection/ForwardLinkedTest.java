@@ -20,6 +20,19 @@ class ForwardLinkedTest {
     }
 
     @Test
+    void checkAddFirst() {
+        assertThat(list).containsExactly(1, 2);
+        list.addFirst(0);
+        assertThat(list).containsExactly(0, 1, 2);
+        list.addFirst(-1);
+        assertThat(list).containsExactly(-1, 0, 1, 2);
+        list.addFirst(-2);
+        list.addFirst(-3);
+        assertThat(list).containsExactly(-3, -2, -1, 0, 1, 2);
+        assertThat(list).hasSize(6);
+    }
+
+    @Test
     void checkIteratorSimple() {
         assertThat(list).hasSize(2);
         list.add(3);
