@@ -31,6 +31,10 @@ public class ForwardLinked<T> implements Iterable<T> {
         size++;
     }
 
+    public int getSize(){
+        return size;
+    }
+
     public T get(int index) {
         Objects.checkIndex(index, size);
         Node<T> current = head;
