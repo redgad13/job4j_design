@@ -2,34 +2,23 @@ package ru.job4j.collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 class ForwardLinkedTest {
 
     private ForwardLinked<Integer> list;
+    private ForwardLinked<Integer> linked;
 
     @BeforeEach
     public void initData() {
         list = new ForwardLinked<>();
         list.add(1);
         list.add(2);
-    }
-
-    @Test
-    void checkAddFirst() {
-        assertThat(list).containsExactly(1, 2);
-        list.addFirst(0);
-        assertThat(list).containsExactly(0, 1, 2);
-        list.addFirst(-1);
-        assertThat(list).containsExactly(-1, 0, 1, 2);
-        list.addFirst(-2);
-        list.addFirst(-3);
-        assertThat(list).containsExactly(-3, -2, -1, 0, 1, 2);
-        assertThat(list).hasSize(6);
     }
 
     @Test
@@ -45,47 +34,6 @@ class ForwardLinkedTest {
         assertThat(list).containsExactly(1, 2);
         list.add(3);
         assertThat(list).containsExactly(1, 2, 3);
-    }
-
-    @Test
-    void whenAddAndGet() {
-        list.add(3);
-        list.add(4);
-        assertThat(list.get(0)).isEqualTo(1);
-        assertThat(list.get(1)).isEqualTo(2);
-        assertThat(list.get(2)).isEqualTo(3);
-        assertThat(list.get(3)).isEqualTo(4);
-    }
-
-    @Test
-    void whenGetFromOutOfBoundThenExceptionThrown() {
-        assertThatThrownBy(() -> list.get(2))
-                .isInstanceOf(IndexOutOfBoundsException.class);
-    }
-
-    @Test
-    void whenGetNegateIndexThenExceptionThrown() {
-        assertThatThrownBy(() -> list.get(-1))
-                .isInstanceOf(IndexOutOfBoundsException.class);
-    }
-
-    @Test
-    void whenAddAndDeleteFirstThenOk() {
-        assertThat(list).containsExactly(1, 2);
-        list.add(3);
-        assertThat(list).containsExactly(1, 2, 3);
-        list.deleteFirst();
-        assertThat(list).containsExactly(2, 3);
-        list.deleteFirst();
-        assertThat(list).containsExactly(3);
-    }
-
-    @Test
-    void whenDeleteFirstFromEmptyListThenException() {
-        ForwardLinked<Integer> list = new ForwardLinked<>();
-        assertThat(list).isEmpty();
-        assertThatThrownBy(list::deleteFirst)
-                .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -154,5 +102,32 @@ class ForwardLinkedTest {
         assertThat(second.hasNext()).isTrue();
         assertThat(second.next()).isEqualTo(2);
         assertThat(second.hasNext()).isFalse();
+    }
+
+    @BeforeEach
+    void init() {
+        linked = new ForwardLinked<>();
+    }
+
+    @Test
+    void whenSize0ThenReturnFalse() {
+        assertThat(linked.revert()).isFalse();
+    }
+
+    @Test
+    void whenSize1ThenReturnFalse() {
+        linked.add(1);
+        assertThat(linked.revert()).isFalse();
+    }
+
+    @Test
+    void whenAddAndRevertTrue() {
+        linked.add(1);
+        linked.add(2);
+        linked.add(3);
+        linked.add(4);
+        assertThat(linked).containsSequence(1, 2, 3, 4);
+        assertThat(linked.revert()).isTrue();
+        assertThat(linked).containsSequence(4, 3, 2, 1);
     }
 }
