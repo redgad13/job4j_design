@@ -37,23 +37,23 @@ class ListUtilsTest {
     }
 
     @Test
-    void removeIf3() {
+    void whenEquals3Remove() {
         Predicate<Integer> predicate = i -> i == 3;
         ListUtils.removeIf(input, predicate);
-        assertThat(input).hasSize(3).containsSequence(1, 4, 5);
+        assertThat(input).hasSize(3).containsExactly(1, 4, 5);
     }
 
     @Test
-    void replaceIf3() {
+    void whenEquals3Replace() {
         Predicate<Integer> predicate = i -> i == 3;
-        ListUtils.replaceIf(input, predicate, 9);
-        assertThat(input).hasSize(4).containsSequence(1, 9, 4, 5);
+        ListUtils.replaceIf(input, predicate, 5);
+        assertThat(input).hasSize(4).containsExactly(1, 5, 4, 5);
     }
 
     @Test
-    void removeAllIf3and4() {
-        ArrayList<Integer> el = new ArrayList<>(Arrays.asList(3, 4));
-        ListUtils.removeAll(input, el);
-        assertThat(input).hasSize(2).containsSequence(1, 5);
+        void whenRemoveAll() {
+        ArrayList<Integer> newList = new ArrayList<>(List.of(1, 3));
+        ListUtils.removeAll(input, newList);
+        assertThat(input).hasSize(2).containsExactly(4, 5);
     }
 }

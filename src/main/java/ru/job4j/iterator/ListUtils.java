@@ -7,26 +7,14 @@ public class ListUtils {
 
     public static <T> void addBefore(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.nextIndex() == index) {
-                iterator.add(value);
-                break;
-            }
-            iterator.next();
-        }
+        ListIterator<T> iterator = list.listIterator(index);
+        iterator.add(value);
     }
 
     public static <T> void addAfter(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        ListIterator<T> listIterator = list.listIterator();
-        while (listIterator.hasNext()) {
-            if (listIterator.previousIndex() == index) {
-                listIterator.add(value);
-                break;
-            }
-            listIterator.next();
-        }
+        ListIterator<T> iterator = list.listIterator(index + 1);
+        iterator.add(value);
     }
 
     public static <T> void removeIf(List<T> list, Predicate<T> filter) {
@@ -52,18 +40,11 @@ public class ListUtils {
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-        ListIterator<T> listIterator = list.listIterator();
-        ListIterator<T> elIterator = elements.listIterator();
-        T a = listIterator.next();
-        T b = elIterator.next();
-        while (listIterator.hasNext()) {
-            if (a == b) {
-                listIterator.remove();
-                if (elIterator.hasNext()) {
-                    b = elIterator.next();
-                }
-            }
-            a = listIterator.next();
+        int i = 0;
+        int finalI = i;
+        Predicate<T> predicate = el -> el == list.get(finalI);
+        for (i = 0; i < elements.size(); i++) {
+            removeIf(list, predicate);
         }
     }
 }
