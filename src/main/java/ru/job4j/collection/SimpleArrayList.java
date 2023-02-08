@@ -45,7 +45,6 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         container[container.length - 1] = null;
         size--;
         return old;
-
     }
 
     @Override
