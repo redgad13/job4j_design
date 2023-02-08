@@ -18,11 +18,8 @@ public class ListUtils {
     public static <T> void removeIf(List<T> list, Predicate<T> filter) {
         ListIterator<T> listIterator = list.listIterator();
         while (listIterator.hasNext()) {
-            if (filter.test(list.get(listIterator.nextIndex()))) {
-                listIterator.next();
+            if (filter.test(listIterator.next())) {
                 listIterator.remove();
-            } else {
-                listIterator.next();
             }
         }
     }
@@ -30,11 +27,8 @@ public class ListUtils {
     public static <T> void replaceIf(List<T> list, Predicate<T> filter, T value) {
         ListIterator<T> listIterator = list.listIterator();
         while (listIterator.hasNext()) {
-            if (filter.test(list.get(listIterator.nextIndex()))) {
-                listIterator.next();
+            if (filter.test(listIterator.next())) {
                 listIterator.set(value);
-            } else {
-                listIterator.next();
             }
         }
     }
