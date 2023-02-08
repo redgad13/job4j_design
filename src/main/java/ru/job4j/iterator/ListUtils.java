@@ -31,6 +31,7 @@ public class ListUtils {
         ListIterator<T> listIterator = list.listIterator();
         while (listIterator.hasNext()) {
             if (filter.test(list.get(listIterator.nextIndex()))) {
+                listIterator.next();
                 listIterator.set(value);
             } else {
                 listIterator.next();
