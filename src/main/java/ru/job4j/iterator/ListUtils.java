@@ -21,8 +21,9 @@ public class ListUtils {
             if (filter.test(list.get(listIterator.nextIndex()))) {
                 listIterator.next();
                 listIterator.remove();
+            } else {
+                listIterator.next();
             }
-            listIterator.next();
         }
     }
 
@@ -30,14 +31,14 @@ public class ListUtils {
         ListIterator<T> listIterator = list.listIterator();
         while (listIterator.hasNext()) {
             if (filter.test(list.get(listIterator.nextIndex()))) {
-                listIterator.next();
                 listIterator.set(value);
+            } else {
+                listIterator.next();
             }
-            listIterator.next();
         }
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-        removeIf(list, el -> Objects.equals(el, elements.get(elements.listIterator().nextIndex())));
+        removeIf(list, elements::contains);
     }
 }
