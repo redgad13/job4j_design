@@ -1,7 +1,6 @@
 package ru.job4j.map;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
+import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -26,10 +25,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int index = indexFor(hash);
         if (table[index] == null) {
             table[index] = new MapEntry<>(key, value);
+            count++;
+            modCount++;
             rsl = true;
         }
-        count++;
-        modCount++;
         return rsl;
     }
 
@@ -48,7 +47,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry.key.equals(key)){
+            if (kvMapEntry.key.equals(key)) {
                 return kvMapEntry.value;
             }
         }
@@ -58,7 +57,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry.key.equals(key)){
+            if (kvMapEntry.key.equals(key)) {
                 kvMapEntry = null;
                 break;
             }
@@ -71,16 +70,28 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return new Iterator<>() {
             int point;
             final int expectedModCount = modCount;
+
             @Override
             public boolean hasNext() {
+                boolean rsl = false;
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return point < count;
+                if (point < capacity) {
+                    rsl = true;
+                }
+                return rsl;
             }
 
             @Override
             public K next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                if (Objects.equals(table[point].key, null)) {
+                    point++;
+                    hasNext();
+                }
                 return table[point++].key;
             }
         };
