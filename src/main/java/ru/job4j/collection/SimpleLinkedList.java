@@ -17,14 +17,12 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
         Node<E> current = head;
         if (head == null) {
             head = newNode;
-            modCount++;
-            size++;
-            return;
+        } else {
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
         }
-        while (current.next != null) {
-            current = current.next;
-        }
-        current.next = newNode;
         modCount++;
         size++;
     }
@@ -33,18 +31,16 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     public E get(int index) {
         Objects.checkIndex(index, size);
         Node<E> current = head;
-        E value = null;
-        for (int i = 0; i <= index; i++) {
-            value = current.item;
+        for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        return value;
+        return current.item;
     }
 
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
-            int point;
+            Node<E> current = head;
             final int expectedModCount = modCount;
 
             @Override
@@ -52,15 +48,17 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return point < size;
+                return current != null;
             }
 
             @Override
             public E next() {
+                Node<E> rsl = current;
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return get(point++);
+                current = current.next;
+                return rsl.item;
             }
         };
     }

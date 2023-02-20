@@ -1,9 +1,6 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -20,12 +17,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean rsl = false;
-        if (count >= capacity) {
+        if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
-        if (table[count] == null) {
+        if (table[indexFor(key.hashCode())] == null) {
             rsl = true;
-            table[count] = new MapEntry<>(key, value);
+            table[indexFor(key.hashCode())] = new MapEntry<>(key, value);
             count++;
             modCount++;
         }
@@ -37,24 +34,23 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int indexFor(int hash) {
-        return hash & (capacity - 1);
+        return hash(hash) & (capacity - 1);
     }
 
     private void expand() {
-        if (count >= capacity * LOAD_FACTOR) {
-            capacity = capacity * 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
+        for (MapEntry<K, V> entry : table) {
+            int i = indexFor(entry.key.hashCode());
+            newTable[i] = entry;
         }
-        modCount++;
     }
 
     @Override
     public V get(K key) {
         V rsl = null;
-        for (MapEntry<K, V> entry : table) {
-            if (key.equals(entry.key)) {
-                rsl = entry.value;
-                break;
-            }
+        int index = indexFor(key.hashCode());
+        if (table[index].key.equals(key)) {
+            rsl = table[index].value;
         }
         return rsl;
     }
@@ -62,24 +58,28 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        for (MapEntry<K, V> entry : table) {
-            if (key.equals(entry.key)) {
-                entry.key = null;
-                rsl = true;
-                break;
-            }
+        int index = indexFor(key.hashCode());
+        if (table[index].key.equals(key)) {
+            table[index] = null;
+            count--;
+            modCount++;
+            rsl = true;
         }
         return rsl;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
+        return new Iterator<>() {
             int point;
+            final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                while (point < capacity && Objects.equals(null, table[point])) {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                while (point < capacity && Objects.isNull(table[point])) {
                     point++;
                 }
                 return point < capacity;
