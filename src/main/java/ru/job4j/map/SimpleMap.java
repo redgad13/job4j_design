@@ -1,6 +1,9 @@
 package ru.job4j.map;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -17,17 +20,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean rsl = false;
-        if (count >= capacity * LOAD_FACTOR) {
+        if (count >= capacity) {
             expand();
         }
-        int hashCode = key.hashCode();
-        int hash = hash(hashCode);
-        int index = indexFor(hash);
-        if (table[index] == null) {
-            table[index] = new MapEntry<>(key, value);
+        if (table[count] == null) {
+            rsl = true;
+            table[count] = new MapEntry<>(key, value);
             count++;
             modCount++;
-            rsl = true;
         }
         return rsl;
     }
@@ -41,56 +41,54 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        capacity = capacity * 2;
+        if (count >= capacity * LOAD_FACTOR) {
+            capacity = capacity * 2;
+        }
+        modCount++;
     }
 
     @Override
     public V get(K key) {
-        for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry.key.equals(key)) {
-                return kvMapEntry.value;
+        V rsl = null;
+        for (MapEntry<K, V> entry : table) {
+            if (key.equals(entry.key)) {
+                rsl = entry.value;
+                break;
             }
         }
-        return null;
+        return rsl;
     }
 
     @Override
     public boolean remove(K key) {
-        for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry.key.equals(key)) {
-                kvMapEntry = null;
+        boolean rsl = false;
+        for (MapEntry<K, V> entry : table) {
+            if (key.equals(entry.key)) {
+                entry.key = null;
+                rsl = true;
                 break;
             }
         }
-        return true;
+        return rsl;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<>() {
+        return new Iterator<K>() {
             int point;
-            final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                boolean rsl = false;
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
+                while (point < capacity && Objects.equals(null, table[point])) {
+                    point++;
                 }
-                if (point < capacity) {
-                    rsl = true;
-                }
-                return rsl;
+                return point < capacity;
             }
 
             @Override
             public K next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                if (Objects.equals(table[point].key, null)) {
-                    point++;
-                    hasNext();
                 }
                 return table[point++].key;
             }
