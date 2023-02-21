@@ -17,10 +17,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean rsl = false;
-        int index = index(key);
         if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
+        int index = index(key);
         if (table[index] == null) {
             rsl = true;
             table[index] = new MapEntry<>(key, value);
