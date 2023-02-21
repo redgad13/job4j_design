@@ -20,9 +20,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
-        if (table[indexFor(key.hashCode())] == null) {
+        if (table[index(key)] == null) {
             rsl = true;
-            table[indexFor(key.hashCode())] = new MapEntry<>(key, value);
+            table[index(key)] = new MapEntry<>(key, value);
             count++;
             modCount++;
         }
@@ -34,22 +34,29 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int indexFor(int hash) {
-        return hash(hash) & (capacity - 1);
+        return hash & (capacity - 1);
     }
 
     private void expand() {
-        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
+        capacity *= 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
         for (MapEntry<K, V> entry : table) {
-            int i = indexFor(entry.key.hashCode());
+            int i = index(entry.key);
             newTable[i] = entry;
         }
+    }
+
+    private int index(K key) {
+        return indexFor(hash(Objects.hashCode(key)));
     }
 
     @Override
     public V get(K key) {
         V rsl = null;
-        int index = indexFor(key.hashCode());
-        if (table[index].key.equals(key)) {
+        int index = index(key);
+        if (table[index] != null
+                && table[index].key.hashCode() == key.hashCode()
+                && table[index].key.equals(key)) {
             rsl = table[index].value;
         }
         return rsl;
@@ -58,8 +65,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        int index = indexFor(key.hashCode());
-        if (table[index].key.equals(key)) {
+        int index = index(key);
+        if (table[index] != null
+                && table[index].key.hashCode() == key.hashCode()
+                && table[index].key.equals(key)) {
             table[index] = null;
             count--;
             modCount++;
