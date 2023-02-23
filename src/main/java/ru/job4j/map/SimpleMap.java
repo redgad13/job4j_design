@@ -53,6 +53,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     private int index(K key) {
         return indexFor(hash(Objects.hashCode(key)));
     }
+
     private boolean checkIndex(K key) {
         return (table[index(key)] != null
                 && Objects.hashCode(table[index(key)].key) == Objects.hashCode(key)
