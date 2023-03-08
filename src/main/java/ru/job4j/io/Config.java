@@ -19,6 +19,9 @@ public class Config {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while (br.ready()) {
                 String line = br.readLine();
+                if (line.startsWith("#") || line.equals("")) {
+                    continue;
+                }
                 String[] lines = line.split("=", 2);
                 if (lines.length > 1) {
                     String key = lines[0];
@@ -32,7 +35,7 @@ public class Config {
     }
 
     public String value(String key) {
-        if (values.get(key).equals("")) {
+        if (values.size() == 0 || values.get(key).equals("")) {
             throw new IllegalArgumentException();
         }
         return values.get(key);

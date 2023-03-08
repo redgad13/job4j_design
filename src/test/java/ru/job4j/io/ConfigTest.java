@@ -36,4 +36,20 @@ class ConfigTest {
         config.load();
         assertThat(config.value("this")).isEqualTo("is for test =?");
     }
+
+    @Test
+    void whenOnlyValue() {
+        String path = "./data/only_value.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThatThrownBy(() -> config.value("")).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void whenNoEqualsSign() {
+        String path = "./data/no_equals.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThatThrownBy(() -> config.value("")).isInstanceOf(IllegalArgumentException.class);
+    }
 }
