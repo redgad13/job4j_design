@@ -25,13 +25,12 @@ public class Config {
                     continue;
                 }
                 lines = line.split("=", 2);
-                if (lines.length == 2 && (!lines[0].isBlank() && !lines[1].isBlank())) {
-                    String key = lines[0];
-                    String value = lines[1];
-                    values.put(key, value);
-                } else {
+                if (lines.length != 2 || (lines[0].isBlank() || lines[1].isBlank())) {
                     throw new IllegalArgumentException();
                 }
+                String key = lines[0];
+                String value = lines[1];
+                values.put(key, value);
             }
         } catch (IOException e) {
             e.printStackTrace();
