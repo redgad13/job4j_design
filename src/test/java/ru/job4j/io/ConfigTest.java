@@ -23,10 +23,8 @@ class ConfigTest {
 
     @Test
     void whenOnlyKey() {
-        String path = "./data/only_keys.properties";
-        Config config = new Config(path);
-        config.load();
-        assertThatThrownBy(() -> config.value("key1")).isInstanceOf(IllegalArgumentException.class);
+        Config config = new Config("./data/only_keys.properties");
+        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -41,15 +39,13 @@ class ConfigTest {
     void whenOnlyValue() {
         String path = "./data/only_value.properties";
         Config config = new Config(path);
-        config.load();
-        assertThatThrownBy(() -> config.value("")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void whenNoEqualsSign() {
         String path = "./data/no_equals.properties";
         Config config = new Config(path);
-        config.load();
-        assertThatThrownBy(() -> config.value("")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
     }
 }

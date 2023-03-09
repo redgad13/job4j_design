@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -16,28 +17,32 @@ public class Config {
     }
 
     public void load() {
+        String[] lines = new String[0];
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while (br.ready()) {
                 String line = br.readLine();
                 if (line.startsWith("#") || line.equals("")) {
                     continue;
                 }
-                String[] lines = line.split("=", 2);
+                lines = line.split("=", 2);
                 if (lines.length > 1) {
                     String key = lines[0];
                     String value = lines[1];
                     values.put(key, value);
                 }
             }
+            for (String s : lines) {
+                if (s.equals("") || lines.length < 2) {
+                    throw new IllegalArgumentException();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public String value(String key) {
-        if (values.size() == 0 || values.get(key).equals("")) {
-            throw new IllegalArgumentException();
-        }
         return values.get(key);
     }
 
