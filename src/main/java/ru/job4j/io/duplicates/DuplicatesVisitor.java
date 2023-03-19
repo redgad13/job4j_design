@@ -5,26 +5,27 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
-    Set<FileProperty> filePropertySet = new HashSet<>();
+    private Map<FileProperty, List<Path>> mapOfFiles = new HashMap<>();
+    List<Path> paths;
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        boolean isOk = filePropertySet.add(new FileProperty(file.toFile().length(),
-                file.toFile().getName(), Path.of(file.toFile().getPath())));
-        if (!isOk) {
-            System.out.println(file.toAbsolutePath());
-            FileProperty rsl = filePropertySet.stream()
-                    .filter(f -> f.getSize() == file.toFile().length()
-                            && f.getName().equals(file.toFile().getName()))
-                    .findFirst()
-                    .get();
-            System.out.println(rsl.getPath());
+        FileProperty properties = new FileProperty(file.toFile().length(), file.toFile().getName());
+        paths = new ArrayList<>();
+        paths.add(file.toAbsolutePath());
+        if (mapOfFiles.containsKey(properties)) {
+            mapOfFiles.get(properties).addAll(paths);
+            for (Path path : mapOfFiles.get(properties)) {
+                System.out.println(path.toAbsolutePath());
+            }
         }
-
+        mapOfFiles.put(properties, paths);
         return super.visitFile(file, attrs);
     }
 }
