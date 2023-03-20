@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        validateParameters(args.length, args[0], args[1]);
+        validateParameters(args);
         Path start = Paths.get(args[0]);
         search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
@@ -20,15 +20,15 @@ public class Search {
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
-    public static void validateParameters(int length, String path, String extension) {
-        if (length < 1) {
-            throw new IllegalArgumentException("No arguments found");
+    public static void validateParameters(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Check quantity of arguments");
         }
-        File file = new File(path);
+        File file = new File(args[1]);
         if (!file.isDirectory()) {
-            throw new IllegalArgumentException(String.format("%s is not a directory, bro", path));
+            throw new IllegalArgumentException(String.format("%s is not a directory, bro", args[1]));
         }
-        if (extension.contains("\\d") || extension.length() < 3) {
+        if (!args[1].startsWith("\\.") && args[1].length() < 1) {
             throw new IllegalArgumentException(String.format("%s is not an extension, bro"));
         }
     }
