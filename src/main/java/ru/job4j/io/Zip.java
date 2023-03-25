@@ -32,11 +32,25 @@ public class Zip {
         }
     }
 
+    private static void checkParams(ArgsName name) {
+        File file = new File(name.get("d"));
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("%s is not a directory", name.get("d")));
+        }
+        if (!name.get("e").endsWith(".bmp")) {
+            throw new IllegalArgumentException("Enter exclusion extension");
+        }
+        if (!name.get("o").endsWith(".zip")) {
+            throw new IllegalArgumentException("Not an archive");
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         ArgsName argsName = ArgsName.of(args);
+        Zip zip = new Zip();
+        checkParams(argsName);
         List<Path> files = Search.search(Path.of(argsName.get("d")),
                 p -> !p.toFile().getName().endsWith(argsName.get("e")));
-        Zip zip = new Zip();
         zip.packFiles(files, new File(argsName.get("o")));
     }
 }
