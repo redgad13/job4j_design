@@ -3,6 +3,8 @@ package ru.job4j.io;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -21,31 +23,26 @@ public class Zip {
         }
     }
 
-    public void packSingleFile(File source, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private static void checkParams(ArgsName name) {
         File file = new File(name.get("d"));
         if (!file.isDirectory()) {
             throw new IllegalArgumentException(String.format("%s is not a directory", name.get("d")));
         }
-        if (!name.get("e").endsWith(".bmp")) {
+        Pattern p = Pattern.compile("\\.\\w+");
+        Matcher exclusion = p.matcher(name.get("e"));
+        Matcher output = p.matcher(name.get("o"));
+        if (!exclusion.matches()) {
             throw new IllegalArgumentException("Enter exclusion extension");
         }
-        if (!name.get("o").endsWith(".zip")) {
+        if (!output.find()) {
             throw new IllegalArgumentException("Not an archive");
         }
     }
 
     public static void main(String[] args) throws IOException {
+        if (args.length != 3) {
+            throw new IllegalArgumentException("Check the quantity of parameters");
+        }
         ArgsName argsName = ArgsName.of(args);
         Zip zip = new Zip();
         checkParams(argsName);
