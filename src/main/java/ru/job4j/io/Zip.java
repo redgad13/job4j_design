@@ -30,10 +30,11 @@ public class Zip {
         }
         Pattern p = Pattern.compile("\\.\\w+");
         Matcher exclusion = p.matcher(name.get("e"));
-        Matcher output = p.matcher(name.get("o"));
         if (!exclusion.matches()) {
             throw new IllegalArgumentException("Enter exclusion extension");
         }
+        p = Pattern.compile("\\.zip");
+        Matcher output = p.matcher(name.get("o"));
         if (!output.find()) {
             throw new IllegalArgumentException("Not an archive");
         }
