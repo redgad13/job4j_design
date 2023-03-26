@@ -19,7 +19,8 @@ public class ConsoleChat {
     }
 
     public void run() {
-        int answersQnty = readPhrases().size();
+        List<String> botPhrases = readPhrases();
+        int answersQnty = botPhrases.size();
         List<String> log = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
@@ -27,7 +28,7 @@ public class ConsoleChat {
             log.add(userInput);
             if (!STOP.equals(userInput)) {
                 int answerNum = (int) (Math.random() * answersQnty);
-                String answer = readPhrases().get(answerNum);
+                String answer = botPhrases.get(answerNum);
                 System.out.println(answer);
                 log.add(answer);
             } else {
