@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -19,11 +20,12 @@ public class CSVReader {
             String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                dataFromLine = line.split("; ");
+                dataFromLine = line.split(";");
                 list.add(dataFromLine);
             }
             dataFromFilter = List.of(argsName.get("filter").split(","));
-            List<String> allFields = List.of(list.get(0));
+            String firstField = Arrays.toString(list.get(0));
+            List<String> allFields = List.of(firstField.split(","));
             List<Integer> indexes = findIndexes(allFields, dataFromFilter);
             for (String[] strings : list) {
                 for (Integer index : indexes) {
