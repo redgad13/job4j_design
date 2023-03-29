@@ -20,29 +20,45 @@ public class CSVReader {
             String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                dataFromLine = line.split("\\W");
+                dataFromLine = line.split(argsName.get("delimiter"));
                 list.add(dataFromLine);
             }
             dataFromFilter = argsName.get("filter").split(",");
             List<String> allFields = Arrays.stream(list.get(0)).toList();
             List<Integer> indexes = findIndexes(allFields, dataFromFilter);
+            StringBuilder builder = new StringBuilder();
             for (String[] strings : list) {
-                for (Integer index : indexes) {
-                    doAction(argsName, strings[index], pr);
+                if (argsName.get("out").equals("stdout")) {
+                    for (Integer index : indexes) {
+                        printData(argsName, strings[index], builder);
+                    }
+                    builder.deleteCharAt(builder.length() - 1);
+                    System.out.println(builder);
+                    builder.setLength(0);
+                } else {
+                    for (Integer index : indexes) {
+                        writeDataToFile(argsName, strings[index], builder);
+                    }
+                    builder.deleteCharAt(builder.length() - 1);
+                    pr.write(String.valueOf(builder));
+                    builder.setLength(0);
+                    pr.println();
                 }
-                System.out.println();
             }
-        } catch (IOException e) {
+
+        } catch (
+                IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void doAction(ArgsName argsName, String s, PrintWriter pr) {
-        if (argsName.get("out").equals("stdout")) {
-            System.out.print(s + " ");
-        } else {
-            pr.write(s + " ");
-        }
+
+    private static void printData(ArgsName argsName, String s, StringBuilder builder) {
+        builder.append(s).append(argsName.get("delimiter"));
+    }
+
+    private static void writeDataToFile(ArgsName argsName, String s, StringBuilder builder) {
+        builder.append(s).append(argsName.get("delimiter"));
     }
 
     private static List<Integer> findIndexes(List<String> allFields, String[] dataFromFilter) {
