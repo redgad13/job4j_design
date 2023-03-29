@@ -20,7 +20,7 @@ public class CSVReader {
             String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                dataFromLine = line.split(";");
+                dataFromLine = line.split("\\W");
                 list.add(dataFromLine);
             }
             dataFromFilter = argsName.get("filter").split(",");
