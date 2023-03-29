@@ -14,7 +14,7 @@ public class CSVReader {
     public static void handle(ArgsName argsName) {
         List<String[]> list = new ArrayList<>();
         String[] dataFromLine;
-        List<String> dataFromFilter;
+        String[] dataFromFilter;
         try (Scanner scanner = new Scanner(new File(argsName.get("path")));
              PrintWriter pr = new PrintWriter(argsName.get("out"))) {
             String line;
@@ -23,9 +23,8 @@ public class CSVReader {
                 dataFromLine = line.split(";");
                 list.add(dataFromLine);
             }
-            dataFromFilter = List.of(argsName.get("filter").split(","));
-            String firstField = Arrays.toString(list.get(0));
-            List<String> allFields = List.of(firstField.split(","));
+            dataFromFilter = argsName.get("filter").split(",");
+            List<String> allFields = Arrays.stream(list.get(0)).toList();
             List<Integer> indexes = findIndexes(allFields, dataFromFilter);
             for (String[] strings : list) {
                 for (Integer index : indexes) {
@@ -46,7 +45,7 @@ public class CSVReader {
         }
     }
 
-    private static List<Integer> findIndexes(List<String> allFields, List<String> dataFromFilter) {
+    private static List<Integer> findIndexes(List<String> allFields, String[] dataFromFilter) {
         List<Integer> indexes = new ArrayList<>();
         int index;
         for (String field : dataFromFilter) {
