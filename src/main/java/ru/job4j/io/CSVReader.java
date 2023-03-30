@@ -29,26 +29,26 @@ public class CSVReader {
                 for (Integer index : indexes) {
                     builder.append(strings[index]).append(delimiter);
                 }
-                doAction(argsName, builder);
+                builder.deleteCharAt(builder.length() - 1);
+                builder.append(System.lineSeparator());
             }
+            doAction(argsName, builder);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void doAction(ArgsName argsName, StringBuilder builder) {
-        builder.deleteCharAt(builder.length() - 1);
         if (!("stdout").equals(argsName.get("out"))) {
             try (FileWriter fr = new FileWriter(argsName.get("out"), true)) {
                 fr.write(String.valueOf(builder));
-                fr.write(System.lineSeparator());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println(builder);
+            System.out.print(builder);
         }
         builder.setLength(0);
     }
