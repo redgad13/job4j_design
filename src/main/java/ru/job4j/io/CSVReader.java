@@ -1,9 +1,6 @@
 package ru.job4j.io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,11 +39,13 @@ public class CSVReader {
     private static void doAction(ArgsName argsName, StringBuilder builder) {
         builder.deleteCharAt(builder.length() - 1);
         if (!("stdout").equals(argsName.get("out"))) {
-            try (PrintWriter pr = new PrintWriter(argsName.get("out"))) {
-                pr.write(String.valueOf(builder));
-                pr.println();
+            try (FileWriter fr = new FileWriter(argsName.get("out"), true)) {
+                fr.write(String.valueOf(builder));
+                fr.write(System.lineSeparator());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println(builder);
