@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ public class CSVReader {
         String[] dataFromLine;
         String[] dataFromFilter;
         String delimiter = argsName.get("delimiter");
-        try (Scanner scanner = new Scanner(new File(argsName.get("path")));
-             PrintWriter pr = new PrintWriter(argsName.get("out"))) {
+        try (Scanner scanner = new Scanner(new File(argsName.get("path")))) {
             String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
@@ -32,21 +32,24 @@ public class CSVReader {
                 for (Integer index : indexes) {
                     builder.append(strings[index]).append(delimiter);
                 }
-                doAction(argsName, builder, pr);
+                doAction(argsName, builder);
             }
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void doAction(ArgsName argsName, StringBuilder builder, PrintWriter pr) {
+    private static void doAction(ArgsName argsName, StringBuilder builder) {
         builder.deleteCharAt(builder.length() - 1);
-        if (("stdout").equals(argsName.get("out"))) {
-            System.out.println(builder);
+        if (!("stdout").equals(argsName.get("out"))) {
+            try (PrintWriter pr = new PrintWriter(argsName.get("out"))) {
+                pr.write(String.valueOf(builder));
+                pr.println();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         } else {
-            pr.write(String.valueOf(builder));
-            pr.println();
+            System.out.println(builder);
         }
         builder.setLength(0);
     }
