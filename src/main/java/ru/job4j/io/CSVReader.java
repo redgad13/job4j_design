@@ -15,12 +15,13 @@ public class CSVReader {
         List<String[]> list = new ArrayList<>();
         String[] dataFromLine;
         String[] dataFromFilter;
+        String delimiter = argsName.get("delimiter");
         try (Scanner scanner = new Scanner(new File(argsName.get("path")));
              PrintWriter pr = new PrintWriter(argsName.get("out"))) {
             String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                dataFromLine = line.split(argsName.get("delimiter"));
+                dataFromLine = line.split(delimiter);
                 list.add(dataFromLine);
             }
             dataFromFilter = argsName.get("filter").split(",");
@@ -28,37 +29,26 @@ public class CSVReader {
             List<Integer> indexes = findIndexes(allFields, dataFromFilter);
             StringBuilder builder = new StringBuilder();
             for (String[] strings : list) {
-                if (argsName.get("out").equals("stdout")) {
-                    for (Integer index : indexes) {
-                        printData(argsName, strings[index], builder);
-                    }
-                    builder.deleteCharAt(builder.length() - 1);
-                    System.out.println(builder);
-                    builder.setLength(0);
-                } else {
-                    for (Integer index : indexes) {
-                        writeDataToFile(argsName, strings[index], builder);
-                    }
-                    builder.deleteCharAt(builder.length() - 1);
-                    pr.write(String.valueOf(builder));
-                    builder.setLength(0);
-                    pr.println();
+                for (Integer index : indexes) {
+                    builder.append(strings[index]).append(delimiter);
                 }
+                doAction(argsName, builder, pr);
             }
-
         } catch (
                 IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    private static void printData(ArgsName argsName, String s, StringBuilder builder) {
-        builder.append(s).append(argsName.get("delimiter"));
-    }
-
-    private static void writeDataToFile(ArgsName argsName, String s, StringBuilder builder) {
-        builder.append(s).append(argsName.get("delimiter"));
+    private static void doAction(ArgsName argsName, StringBuilder builder, PrintWriter pr) {
+        builder.deleteCharAt(builder.length() - 1);
+        if (("stdout").equals(argsName.get("out"))) {
+            System.out.println(builder);
+        } else {
+            pr.write(String.valueOf(builder));
+            pr.println();
+        }
+        builder.setLength(0);
     }
 
     private static List<Integer> findIndexes(List<String> allFields, String[] dataFromFilter) {

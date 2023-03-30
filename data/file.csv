@@ -1,5 +1,5 @@
-name; age; birthDate; education; children
-Vadim; 35; 13/04/1988; university; true
-Ivan; 33; 15/04/1990; college; true
-John; 13; 15/04/2010; none; false
-Peter; 23; 15/04/2000; school; true
+name;age;birthDate;education;children
+Vadim;35;13/04/1988;university;true
+Ivan;33;15/04/1990;college;true
+John;13;15/04/2010;none;false
+Peter;23;15/04/2000;school;true
