@@ -50,7 +50,6 @@ public class CSVReader {
         } else {
             System.out.print(builder);
         }
-        builder.setLength(0);
     }
 
     private static List<Integer> findIndexes(List<String> allFields, String[] dataFromFilter) {
