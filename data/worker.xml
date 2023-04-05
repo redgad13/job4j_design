@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<worker isGood="true" salary="1000" name="Sanya">
+    <boss name="Ivan" salary="9999" isGood="false"/>
+    <tasks>
+        <task>work</task>
+        <task>leisure</task>
+    </tasks>
+</worker>
