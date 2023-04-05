@@ -30,4 +30,8 @@ public class Student {
     public Praepostor getPraepostor() {
         return praepostor;
     }
+
+    public String[] getSubjects() {
+        return subjects;
+    }
 }

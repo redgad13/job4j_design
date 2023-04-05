@@ -3,6 +3,8 @@ package ru.job4j.serialization.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         Gson gson = new GsonBuilder().create();
@@ -19,7 +21,7 @@ public class Main {
                 + "\"surname\":" + "\"" + student.getPraepostor().getSurname() + "\","
                 + "\"isNerd\":" + student.getPraepostor().isNerd()
                 + "}" + ","
-                + "\"subjects\":" + "[\"" + "Math" + "\"," + "\"English\"]" + "}";
+                + "\"subjects\":" + Arrays.toString(student.getSubjects()) + "}";
 
         final Student gsonStudent = gson.fromJson(studentInJSFormat, Student.class);
         System.out.println(studentJson);
