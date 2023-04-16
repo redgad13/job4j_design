@@ -6,6 +6,7 @@ import ru.job4j.io.SearchFiles;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -20,7 +21,12 @@ public class FindFiles {
         checkParams(argsName);
         Path directory = Path.of(argsName.get("d"));
         String outputFile = argsName.get("o");
-        List<Path> lines = findFiles(directory, p -> p.getFileName().toString().contains(argsName.get("n")));
+        List<Path> lines;
+        if ("name".equals(argsName.get("t"))) {
+            lines = findFiles(directory, p -> p.getFileName().toString().equals(argsName.get("n")));
+        } else {
+            lines = findFiles(directory, p -> p.endsWith(argsName.get("n")));
+        }
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFile))) {
             for (Path line : lines) {
                 bufferedWriter.write(line.toString());
