@@ -32,4 +32,4 @@ public class Search {
             throw new IllegalArgumentException(String.format("%s is not an extension, bro"));
         }
     }
-}
+            }

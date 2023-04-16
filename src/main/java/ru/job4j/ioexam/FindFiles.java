@@ -6,7 +6,6 @@ import ru.job4j.io.SearchFiles;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -24,12 +23,20 @@ public class FindFiles {
         List<Path> lines;
         if ("name".equals(argsName.get("t"))) {
             lines = findFiles(directory, p -> p.getFileName().toString().equals(argsName.get("n")));
+        } else if ("regex".equals(argsName.get("t"))) {
+            Pattern pattern = Pattern.compile(argsName.get("n"));
+            lines = findFiles(directory, p -> pattern.matcher(p.getFileName().toString()).matches());
         } else {
-            lines = findFiles(directory, p -> p.endsWith(argsName.get("n")));
+            String fileMask = argsName.get("n");
+            String regex = Pattern.quote(fileMask).replace("\\*", ".*")
+                    .replace("\\?", ".");
+            Pattern pattern = Pattern.compile(regex);
+            lines = findFiles(directory, p -> pattern.matcher(p.getFileName().toString()).matches());
         }
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFile))) {
             for (Path line : lines) {
                 bufferedWriter.write(line.toString());
+                bufferedWriter.write(System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();
