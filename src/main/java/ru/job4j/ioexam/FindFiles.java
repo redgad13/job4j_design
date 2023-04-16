@@ -30,21 +30,21 @@ public class FindFiles {
         }
     }
 
-    private static void checkParams(ArgsName argsName) throws IOException {
+    private static void checkParams(ArgsName argsName) {
         File dir = new File(argsName.get("d"));
         if (!dir.isDirectory()) {
             throw new IllegalArgumentException(String.format("%s is not a directory", argsName.get("d")));
         }
-        if ("mask".equals(argsName.get("t"))) {
-            /*вот тут не понимаю что делать */
-        } else if ("name".equals(argsName.get("t"))) {
-            /*вот тут не понимаю что делать */
-        } else if ("regex".equals(argsName.get("t"))) {
-            /*вот тут не понимаю что делать */
+        if ((!"mask".equals(argsName.get("t"))
+                && !"name".equals(argsName.get("t"))
+                && !"regex".equals(argsName.get("t")))) {
+            throw new IllegalArgumentException("Parameter should contain \"mask\" or \"name\" or \"regex\"");
         }
-        File outputFile = new File(argsName.get("o"));
-        if (!outputFile.exists()) {
-            outputFile.createNewFile();
+        String regex = "\\S.\\D*";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(argsName.get("o"));
+        if (!m.matches()) {
+            throw new IllegalArgumentException(String.format("%s is not a file", argsName.get("o")));
         }
     }
 
