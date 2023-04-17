@@ -28,8 +28,8 @@ public class FindFiles {
             lines = findFiles(directory, p -> pattern.matcher(p.getFileName().toString()).matches());
         } else {
             String fileMask = argsName.get("n");
-            String regex = Pattern.quote(fileMask).replace("\\*", ".*")
-                    .replace("\\?", ".");
+            String regex = fileMask.replace(".", "[.]").replace("*", ".+")
+                    .replace("?", ".");
             Pattern pattern = Pattern.compile(regex);
             lines = findFiles(directory, p -> pattern.matcher(p.getFileName().toString()).matches());
         }
