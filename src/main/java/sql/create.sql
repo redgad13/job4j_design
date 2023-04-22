@@ -1,4 +1,4 @@
-create table user(
+create table users(
 id serial primary key,
 user_name varchar(15)
 );
@@ -6,7 +6,7 @@ user_name varchar(15)
 create table role(
 id serial primary key,
 role varchar(15),
-user_id int references user(id)
+user_id int references users(id)
 );
 
 create table rule(
@@ -17,7 +17,7 @@ rule varchar(15)
 create table item(
 id serial primary key,
 item varchar(15),
-user_id int references user(id),
+user_id int references users(id),
 category_id int references category(id),
 state_id int references state(id)
 );
