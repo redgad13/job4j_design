@@ -14,6 +14,15 @@ id serial primary key,
 rule varchar(15)
 );
 
+create table state(
+id serial primary key,
+state varchar(15)
+);
+
+create table category(
+id serial primary key,
+category varchar(15)
+);
 create table item(
 id serial primary key,
 item varchar(15),
@@ -32,16 +41,6 @@ create table attch(
 id serial primary key,
 attch varchar(15),
 item_id int references item(id)
-);
-
-create table state(
-id serial primary key,
-state varchar(15)
-);
-
-create table category(
-id serial primary key,
-category varchar(15)
 );
 
 create table role_rule(
