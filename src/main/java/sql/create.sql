@@ -1,54 +1,51 @@
-create table master(
+create table user(
 id serial primary key,
-master_name varchar(15),
-pets_quantity int
+user_name varchar(15)
 );
 
-create table pet(
+create table role(
 id serial primary key,
-nickname varchar(10)
+role varchar(15),
+user_id int references user(id)
 );
 
-create table pet_owner(
+create table rule(
 id serial primary key,
-master_id int references master(id),
-pet_id int references pet(id)
+rule varchar(15)
 );
 
-insert into master(master_name) values ('John');
-insert into master(master_name) values ('Bill');
-insert into master(master_name) values ('Joe');
-insert into pet(nickname) values ('Zhuchka');
-insert into pet(nickname) values ('Belka');
-insert into pet(nickname) values ('Strelka');
-insert into pet(nickname) values ('Malish');
-insert into pet_owner(master_id, pet_id) values (1, 1);
-insert into pet_owner(master_id, pet_id) values (2, 2);
-insert into pet_owner(master_id, pet_id) values (3, 3);
-insert into pet_owner(master_id, pet_id) values (3, 4);
-
-select * from pet_owner;
-
-create table dog_master(
+create table item(
 id serial primary key,
-dm_name varchar(15),
-dogs_qnty int
+item varchar(15),
+user_id int references user(id),
+category_id int references category(id),
+state_id int references state(id)
 );
 
-create table dogs(
+create table comment(
 id serial primary key,
-nickname varchar(12),
-master_id int references dog_master(id)
+comment varchar(15),
+item_id int references item(id)
 );
 
-alter table dogs rename column dog_id to master_id;
+create table attch(
+id serial primary key,
+attch varchar(15),
+item_id int references item(id)
+);
 
-insert into dog_master(dm_name) values ('First master');
-insert into dog_master(dm_name) values ('Second master');
-insert into dogs (nickname, master_id) values ('First dog', 1);
-insert into dogs (nickname, master_id) values ('Second dog', 1);
-insert into dogs (nickname, master_id) values ('Third dog', 2);
-insert into dogs (nickname, master_id) values ('Fourth dog', 2);
-insert into dogs (nickname, master_id) values ('Fifth dog', 2);
-select * from dogs;
+create table state(
+id serial primary key,
+state varchar(15)
+);
 
+create table category(
+id serial primary key,
+category varchar(15)
+);
+
+create table role_rule(
+id serial primary key,
+role_id int references role(id),
+rule_id int references rule(id)
+);
