@@ -60,7 +60,7 @@ ability_name varchar(30)
 create table superhero(
 id serial primary key,
 hero_name varchar(15),
-hero_ability varchar(30) references superability(id) unique
+hero_ability int references superability(id) unique
 );
 
 insert into superability(ability_name) values ('i can fly');
