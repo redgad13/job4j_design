@@ -23,3 +23,6 @@ from computer c join producer p on c.producer_id = p.id;
 
 select p.title, c.model
 from computer c join producer p on c.producer_id = p.id;
+
+select p.title as "Название", c.model as Модель, c.producer_id as Компания
+from computer c join producer p on c.producer_id = p.id;
