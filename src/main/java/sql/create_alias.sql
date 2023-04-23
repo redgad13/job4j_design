@@ -1,0 +1,1 @@
+create database alias_db;
