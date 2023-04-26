@@ -33,4 +33,4 @@ insert into teens(teen_name, is_male) values ('anna', false), ('irina', false),
 ('andrei', true), ('vadim', true), ('oleg', true);
 
 select t1.teen_name as "Первое имя", t2.teen_name as "Второе имя" from teens t1 cross join teens t2
-where t1.is_male != t2.is_male;
+where t1.is_male != t2.is_male and t1.is_male;
