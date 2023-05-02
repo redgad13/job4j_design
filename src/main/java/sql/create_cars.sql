@@ -1,1 +1,1 @@
-create database cars;
+CREATE database cars;

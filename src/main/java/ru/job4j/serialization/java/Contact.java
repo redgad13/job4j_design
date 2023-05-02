@@ -12,7 +12,6 @@ public class Contact implements Serializable {
     private final String phone;
     private static final Logger LOG = LoggerFactory.getLogger(Contact.class.getName());
 
-
     public Contact(int zipCode, String phone) {
         this.zipCode = zipCode;
         this.phone = phone;
