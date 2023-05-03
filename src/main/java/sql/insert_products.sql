@@ -6,20 +6,20 @@ CREATE TABLE products (
     price integer
 );
 
-CREATE OR replace function discount()
+create or replace function discount()
     returns trigger as
 $$
-    BEGIN
+    begin
         update products
         set price = price - price * 0.2
-        where count <= 5 AND id = new.id;
-        return NEW;
-    END;
+        where count <= 5 and id = new.id;
+        return new;
+    end;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE trigger discount_trigger
-    after INSERT
+create trigger discount_trigger
+    before insert
     on products
     for each row
     execute procedure discount();
@@ -36,23 +36,45 @@ INSERT INTO products (name, producer, count, price) VALUES ('product_1', 'produc
 
 SELECT * FROM products;
 
-CREATE OR replace function tax()
+create or replace function tax()
     returns trigger as
 $$
-    BEGIN
+    begin
         update products
         set price = price - price * 0.2
-        where id = (select id from inserted) and count <= 5;
+        where id in (select id from inserted) and count <= 5;
         return new;
-    END;
+    end;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE trigger tax_trigger
-    after INSERT on products
+create trigger tax_trigger
+    after insert on products
     referencing new table as inserted
     for each statement
     execute procedure tax();
 
 insert into products (name, producer, count, price) VALUES ('product_1', 'producer_1', 3, 50);
 	select * from products;
+
+create table history_of_price (
+    id serial primary key,
+    history_name varchar(50),
+    price integer,
+    date timestamp
+);
+
+	create or replace function input()
+    returns trigger as
+$$
+    begin
+        insert into history_of_price(history_name, price, date)
+        values (new.products.name, new.products.price, CURRENT_TIMESTAMP);
+        return new;
+    end
+$$ language 'plpgsql';
+
+CREATE trigger input_trigger
+after insert on products
+for each row
+execute procedure input();
