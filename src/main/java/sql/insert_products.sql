@@ -10,7 +10,7 @@ create or replace function discount()
     returns trigger as
 $$
     begin
-        update products
+        update products for each row
         set price = price - price * 0.2
         where count <= 5 and id = new.id;
         return new;
@@ -69,7 +69,7 @@ create table history_of_price (
 $$
     begin
         insert into history_of_price(history_name, price, date)
-        values (new.products.name, new.products.price, CURRENT_TIMESTAMP);
+        values (new.name, new.price, CURRENT_TIMESTAMP);
         return new;
     end
 $$ language 'plpgsql';
