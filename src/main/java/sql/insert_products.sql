@@ -6,20 +6,20 @@ CREATE TABLE products (
     price integer
 );
 
-create or replace function discount()
+CREATE OR replace function discount()
     returns trigger as
 $$
     begin
-        update products for each row
-        set price = price - price * 0.2
-        where count <= 5 and id = new.id;
-        return new;
+       if (new.count <= 5) then
+       new.price = new.price - new.price * 0.2;
+       end if;
+       return new;
     end;
 $$
 LANGUAGE 'plpgsql';
 
-create trigger discount_trigger
-    before insert
+CREATE trigger discount_trigger
+    before INSERT
     on products
     for each row
     execute procedure discount();
@@ -36,7 +36,7 @@ INSERT INTO products (name, producer, count, price) VALUES ('product_1', 'produc
 
 SELECT * FROM products;
 
-create or replace function tax()
+CREATE OR replace function tax()
     returns trigger as
 $$
     begin
@@ -48,17 +48,17 @@ $$
 $$
 LANGUAGE 'plpgsql';
 
-create trigger tax_trigger
-    after insert on products
+CREATE trigger tax_trigger
+    after INSERT on products
     referencing new table as inserted
     for each statement
     execute procedure tax();
 
-insert into products (name, producer, count, price) VALUES ('product_1', 'producer_1', 3, 50);
-	select * from products;
+INSERT INTO products (name, producer, count, price) VALUES ('product_1', 'producer_1', 3, 50);
+	SELECT * FROM products;
 
-create table history_of_price (
-    id serial primary key,
+CREATE TABLE history_of_price (
+    id serial PRIMARY KEY,
     history_name varchar(50),
     price integer,
     date timestamp
@@ -69,12 +69,40 @@ create table history_of_price (
 $$
     begin
         insert into history_of_price(history_name, price, date)
-        values (new.name, new.price, CURRENT_TIMESTAMP);
+        values (new.name, new.price, current_timestamp);
         return new;
     end
 $$ language 'plpgsql';
 
-CREATE trigger input_trigger
+create trigger input_trigger
 after insert on products
 for each row
 execute procedure input();
+
+create or replace procedure insert_data(i_name varchar, prod varchar, i_count integer, i_price integer)
+language 'plpgsql'
+as $$
+    begin
+        insert into products (name, producer, count, price)
+        values (i_name, prod, i_count, i_price);
+    end
+$$;
+
+call insert_data('product_2', 'producer_2', 15, 32);
+
+CREATE or replace procedure update_data(u_count integer, tax float, u_id integer)
+language 'plpgsql'
+as $$
+    begin
+        if u_count > 0 then
+        UPDATE products set count = count - u_count where id = u_id;
+        end if;
+        if tax >0 then
+        UPDATE products set price = price + price * tax;
+        end if;
+    end;
+$$;
+
+call update_data(10, 0, 1);
+call insert_data('product_1', 'producer_1', 3, 50);
+call insert_data('product_3', 'producer_3', 8, 115);
