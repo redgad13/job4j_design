@@ -41,7 +41,7 @@ CREATE OR replace function tax()
 $$
     begin
         update products
-        set price = price - price * 0.2
+        set price = price + price * 0.2
         where id in (select id from inserted) and count <= 5;
         return new;
     end;
