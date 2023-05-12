@@ -106,3 +106,6 @@ $$;
 call update_data(10, 0, 1);
 call insert_data('product_1', 'producer_1', 3, 50);
 call insert_data('product_3', 'producer_3', 8, 115);
+select * from products;
+delete from products;
+select * from products;
