@@ -3,7 +3,6 @@ package ru.job4j.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -17,7 +16,7 @@ public class Config {
     }
 
     public void load() {
-        String[] lines = new String[0];
+        String[] lines;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while (br.ready()) {
                 String line = br.readLine();
