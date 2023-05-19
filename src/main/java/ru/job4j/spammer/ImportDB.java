@@ -28,11 +28,10 @@ public class ImportDB {
             while (reader.ready()) {
                 s = reader.readLine();
                 String[] line = s.split(";");
-                if (line.length != 2 || "".equals(line[0]) || "".equals(line[1])) {
+                if (line.length != 2 || line[0].isEmpty() || line[1].isEmpty()) {
                     throw new IllegalArgumentException();
-                } else {
-                    users.add(new User(line[0], line[1]));
                 }
+                users.add(new User(line[0], line[1]));
             }
         } catch (IOException e) {
             e.printStackTrace();
