@@ -14,6 +14,11 @@ public class MaxMin {
     }
 
     public <T> T min(List<T> value, Comparator<T> comparator) {
-      return max(value, comparator);
+        T rsl = value.get(0);
+        for (int i = 0; i < value.size() - 1; i++) {
+            T next = value.get(i + 1);
+            rsl = comparator.compare(rsl, next) > 0 ? rsl : next;
+        }
+        return rsl;
     }
 }
