@@ -37,7 +37,7 @@ class MaxMinTest {
     @Test
     void whenIntegerMinIsOK() {
         MaxMin maxMin = new MaxMin();
-        Comparator<Integer> comparator = (o1, o2) -> o2 - o1;
+        Comparator<Integer> comparator = Comparator.comparingInt(o -> o);
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(10);
@@ -49,7 +49,7 @@ class MaxMinTest {
     @Test
     void whenStringMinIsOK() {
         MaxMin maxMin = new MaxMin();
-        Comparator<String> comparator = Comparator.reverseOrder();
+        Comparator<String> comparator = String::compareTo;
         List<String> list = new ArrayList<>();
         list.add("Anna");
         list.add("Bella");
