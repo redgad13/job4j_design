@@ -23,7 +23,7 @@ public class JSONReport implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(filter);
+        return gson.toJson(store.findBy(filter));
     }
 
     public static class EmployeeForListJson {
