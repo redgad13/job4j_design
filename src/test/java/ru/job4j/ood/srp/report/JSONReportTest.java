@@ -17,7 +17,6 @@ class JSONReportTest {
     @Test
     public void whenOldGenerated() {
         MemStore store = new MemStore();
-        Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", new GregorianCalendar(2020, 0, 15, 1, 11),
                 new GregorianCalendar(2021, 0, 15, 1, 11), 100);
         Employee worker1 = new Employee("Petr", new GregorianCalendar(2021, 1, 16, 2, 22),
@@ -27,10 +26,49 @@ class JSONReportTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         Gson gson = new GsonBuilder().create();
         store.add(worker);
-        Report engine = new JSONReport(store, parser, gson);
-        String expect = "Name; Hired; Fired; Salary;"
-                + System.lineSeparator()
-                + "[{\"name\":\"Ivan\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":15,\"hourOfDay\":1,\"minute\":11,\"second\":0},\"fired\":{\"year\":2021,\"month\":0,\"dayOfMonth\":15,\"hourOfDay\":1,\"minute\":11,\"second\":0},\"salary\":100.0}]";
+        store.add(worker1);
+        store.add(worker2);
+        Report engine = new JSONReport(store, parser);
+        StringBuilder expect = new StringBuilder();
+        expect.append("[")
+                .append(System.lineSeparator())
+                .append("{")
+                .append(System.lineSeparator())
+                .append("\"name\":\"Ivan\",")
+                .append(System.lineSeparator())
+                .append("\"hired\": \"15:01:2020 01:11\",")
+                .append(System.lineSeparator())
+                .append("\"fired\": \"15:01:2021 01:11\",")
+                .append(System.lineSeparator())
+                .append("\"salary\": \"100.0\"")
+                .append(System.lineSeparator())
+                .append("},")
+                .append(System.lineSeparator())
+                .append("{" )
+                .append(System.lineSeparator())
+                .append("\"name\":\"Petr\",")
+                .append(System.lineSeparator())
+                .append("\"hired\": \"16:02:2021 02:22\",")
+                .append(System.lineSeparator())
+                .append("\"fired\": \"15:01:2022 01:11\",")
+                .append(System.lineSeparator())
+                .append("\"salary\": \"200.0\"")
+                .append(System.lineSeparator())
+                .append("},")
+                .append(System.lineSeparator())
+                .append("{")
+                .append(System.lineSeparator())
+                .append("\"name\":\"Sergei\",")
+                .append(System.lineSeparator())
+                .append("\"hired\": \"17:03:2022 03:03\",")
+                .append(System.lineSeparator())
+                .append("\"fired\": \"15:01:2023 01:11\",")
+                .append(System.lineSeparator())
+                .append("\"salary\": \"300.0\"")
+                .append(System.lineSeparator())
+                .append("}")
+                .append(System.lineSeparator())
+                .append("]");
         assertThat(engine.generate(em -> true)).isEqualTo(expect);
     }
 

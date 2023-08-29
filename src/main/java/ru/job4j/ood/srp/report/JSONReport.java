@@ -13,18 +13,37 @@ public class JSONReport implements Report {
 
     private final Store store;
     private final DateTimeParser<Calendar> dateTimeParser;
-    private final Gson gson;
 
-    public JSONReport(Store store, DateTimeParser<Calendar> dateTimeParser, Gson gson) {
+    public JSONReport(Store store, DateTimeParser<Calendar> dateTimeParser) {
         this.store = store;
         this.dateTimeParser = dateTimeParser;
-        this.gson = new GsonBuilder().create();
     }
 
     @Override
     public String generate(Predicate<Employee> filter) {
-        return "Name; Hired; Fired; Salary;"
-                + System.lineSeparator()
-                + gson.toJson(store.findBy(filter));
+        StringBuilder text = new StringBuilder();
+        text.append("[");
+        for (Employee employee : store.findBy(filter)) {
+            text.append(System.lineSeparator())
+                    .append("{")
+                    .append(System.lineSeparator())
+                    .append("\"name\":\"")
+                    .append(employee.getName()).append("\",")
+                    .append(System.lineSeparator())
+                    .append("\"hired\": \"")
+                    .append(dateTimeParser.parse(employee.getHired())).append("\",")
+                    .append(System.lineSeparator())
+                    .append("\"fired\": \"")
+                    .append(dateTimeParser.parse(employee.getFired())).append("\",")
+                    .append(System.lineSeparator())
+                    .append("\"salary\": \"")
+                    .append(employee.getSalary()).append("\"")
+                    .append(System.lineSeparator())
+                    .append("},");
+        }
+        text.deleteCharAt(text.length() - 1);
+        text.append(System.lineSeparator())
+                .append("]");
+        return text.toString();
     }
 }
