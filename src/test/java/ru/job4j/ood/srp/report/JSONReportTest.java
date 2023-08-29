@@ -43,7 +43,7 @@ class JSONReportTest {
                 .append(System.lineSeparator())
                 .append("},")
                 .append(System.lineSeparator())
-                .append("{" )
+                .append("{")
                 .append(System.lineSeparator())
                 .append("\"name\":\"Petr\",")
                 .append(System.lineSeparator())
