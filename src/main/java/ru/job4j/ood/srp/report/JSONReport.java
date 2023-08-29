@@ -6,6 +6,7 @@ import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.Store;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.function.Predicate;
 
@@ -21,29 +22,55 @@ public class JSONReport implements Report {
 
     @Override
     public String generate(Predicate<Employee> filter) {
-        StringBuilder text = new StringBuilder();
-        text.append("[");
-        for (Employee employee : store.findBy(filter)) {
-            text.append(System.lineSeparator())
-                    .append("{")
-                    .append(System.lineSeparator())
-                    .append("\"name\":\"")
-                    .append(employee.getName()).append("\",")
-                    .append(System.lineSeparator())
-                    .append("\"hired\": \"")
-                    .append(dateTimeParser.parse(employee.getHired())).append("\",")
-                    .append(System.lineSeparator())
-                    .append("\"fired\": \"")
-                    .append(dateTimeParser.parse(employee.getFired())).append("\",")
-                    .append(System.lineSeparator())
-                    .append("\"salary\": \"")
-                    .append(employee.getSalary()).append("\"")
-                    .append(System.lineSeparator())
-                    .append("},");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(filter);
+    }
+
+    public static class EmployeeForListJson {
+
+        private String name;
+        private String hired;
+        private String fired;
+        private double salary;
+        SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
+
+        public EmployeeForListJson(Employee employee) {
+            this.name = employee.getName();
+            this.hired = format.format(employee.getHired());
+            this.fired = format.format(employee.getFired());
+            this.salary = employee.getSalary();
         }
-        text.deleteCharAt(text.length() - 1);
-        text.append(System.lineSeparator())
-                .append("]");
-        return text.toString();
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getHired() {
+            return hired;
+        }
+
+        public void setHired(String hired) {
+            this.hired = hired;
+        }
+
+        public String getFired() {
+            return fired;
+        }
+
+        public void setFired(String fired) {
+            this.fired = fired;
+        }
+
+        public double getSalary() {
+            return salary;
+        }
+
+        public void setSalary(double salary) {
+            this.salary = salary;
+        }
     }
 }

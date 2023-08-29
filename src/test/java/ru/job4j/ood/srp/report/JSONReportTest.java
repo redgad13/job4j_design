@@ -24,7 +24,6 @@ class JSONReportTest {
         Employee worker2 = new Employee("Sergei", new GregorianCalendar(2022, 2, 17, 3, 3),
                 new GregorianCalendar(2023, 0, 15, 1, 11), 300);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
-        Gson gson = new GsonBuilder().create();
         store.add(worker);
         store.add(worker1);
         store.add(worker2);
@@ -69,7 +68,7 @@ class JSONReportTest {
                 .append("}")
                 .append(System.lineSeparator())
                 .append("]");
-        assertThat(engine.generate(em -> true)).isEqualTo(expect);
+        assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
 
 }
