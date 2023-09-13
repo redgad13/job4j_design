@@ -32,12 +32,12 @@ public class JSONReport implements Report {
         private String hired;
         private String fired;
         private double salary;
-        SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
+        private SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
 
         public EmployeeForListJson(Employee employee) {
             this.name = employee.getName();
-            this.hired = format.format(employee.getHired());
-            this.fired = format.format(employee.getFired());
+            this.hired = format.format(employee.getHired().getTime());
+            this.fired = format.format(employee.getFired().getTime());
             this.salary = employee.getSalary();
         }
 
