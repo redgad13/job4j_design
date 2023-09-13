@@ -7,7 +7,9 @@ import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.Store;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class JSONReport implements Report {
@@ -23,6 +25,12 @@ public class JSONReport implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        List<EmployeeForListJson> ljson = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
+        for (Employee employee : store.findBy(filter)) {
+            ljson.add(new EmployeeForListJson(employee, format));
+        }
+
         return gson.toJson(store.findBy(filter));
     }
 
@@ -32,9 +40,8 @@ public class JSONReport implements Report {
         private String hired;
         private String fired;
         private double salary;
-        private SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
 
-        public EmployeeForListJson(Employee employee) {
+        public EmployeeForListJson(Employee employee, SimpleDateFormat format) {
             this.name = employee.getName();
             this.hired = format.format(employee.getHired().getTime());
             this.fired = format.format(employee.getFired().getTime());
