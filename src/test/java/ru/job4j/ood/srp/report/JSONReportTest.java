@@ -28,68 +28,27 @@ class JSONReportTest {
         store.add(worker1);
         store.add(worker2);
         Report engine = new JSONReport(store, parser);
-        String expect = "[\n" +
-                "  {\n" +
-                "    \"name\": \"Ivan\",\n" +
-                "    \"hired\": {\n" +
-                "      \"year\": 2020,\n" +
-                "      \"month\": 0,\n" +
-                "      \"dayOfMonth\": 15,\n" +
-                "      \"hourOfDay\": 1,\n" +
-                "      \"minute\": 11,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"fired\": {\n" +
-                "      \"year\": 2021,\n" +
-                "      \"month\": 0,\n" +
-                "      \"dayOfMonth\": 15,\n" +
-                "      \"hourOfDay\": 1,\n" +
-                "      \"minute\": 11,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"salary\": 100.0\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"name\": \"Petr\",\n" +
-                "    \"hired\": {\n" +
-                "      \"year\": 2021,\n" +
-                "      \"month\": 1,\n" +
-                "      \"dayOfMonth\": 16,\n" +
-                "      \"hourOfDay\": 2,\n" +
-                "      \"minute\": 22,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"fired\": {\n" +
-                "      \"year\": 2022,\n" +
-                "      \"month\": 0,\n" +
-                "      \"dayOfMonth\": 15,\n" +
-                "      \"hourOfDay\": 1,\n" +
-                "      \"minute\": 11,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"salary\": 200.0\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"name\": \"Sergei\",\n" +
-                "    \"hired\": {\n" +
-                "      \"year\": 2022,\n" +
-                "      \"month\": 2,\n" +
-                "      \"dayOfMonth\": 17,\n" +
-                "      \"hourOfDay\": 3,\n" +
-                "      \"minute\": 3,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"fired\": {\n" +
-                "      \"year\": 2023,\n" +
-                "      \"month\": 0,\n" +
-                "      \"dayOfMonth\": 15,\n" +
-                "      \"hourOfDay\": 1,\n" +
-                "      \"minute\": 11,\n" +
-                "      \"second\": 0\n" +
-                "    },\n" +
-                "    \"salary\": 300.0\n" +
-                "  }\n" +
-                "]";
+        String expect = """
+                [
+                  {
+                    "name": "Ivan",
+                    "hired": "15:01:2020 01:11",
+                    "fired": "15:01:2021 01:11",
+                    "salary": 100.0
+                  },
+                  {
+                    "name": "Petr",
+                    "hired": "16:02:2021 02:22",
+                    "fired": "15:01:2022 01:11",
+                    "salary": 200.0
+                  },
+                  {
+                    "name": "Sergei",
+                    "hired": "17:03:2022 03:03",
+                    "fired": "15:01:2023 01:11",
+                    "salary": 300.0
+                  }
+                ]""";
         assertThat(engine.generate(em -> true)).isEqualTo(expect);
     }
 

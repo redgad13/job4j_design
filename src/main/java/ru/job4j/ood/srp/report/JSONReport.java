@@ -30,8 +30,7 @@ public class JSONReport implements Report {
         for (Employee employee : store.findBy(filter)) {
             ljson.add(new EmployeeForListJson(employee, format));
         }
-
-        return gson.toJson(store.findBy(filter));
+        return gson.toJson(ljson);
     }
 
     public static class EmployeeForListJson {
