@@ -1,5 +1,6 @@
 package ru.job4j.ood.srp.report;
 
+import ru.job4j.ood.ocp.bad.EmployeesList;
 import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.Store;
@@ -44,7 +45,7 @@ public class XMLReport implements Report {
     }
 
     @XmlRootElement(name = "employees")
-        public static class EmployeeForXML {
+    public static class EmployeeForXML {
 
         private String name;
         private String hired;
@@ -91,4 +92,22 @@ public class XMLReport implements Report {
         }
     }
 
+    public static class Employees {
+        private List<EmployeeForXML> employees;
+
+        public Employees() {
+        }
+
+        public Employees(List<EmployeeForXML> employees) {
+            this.employees = employees;
+        }
+
+        public List<EmployeeForXML> getEmployees() {
+            return employees;
+        }
+
+        public void setEmployees(List<EmployeeForXML> employees) {
+            this.employees = employees;
+        }
+    }
 }
