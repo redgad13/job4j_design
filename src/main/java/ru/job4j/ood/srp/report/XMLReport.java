@@ -1,6 +1,5 @@
 package ru.job4j.ood.srp.report;
 
-import ru.job4j.ood.ocp.bad.EmployeesList;
 import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
 import ru.job4j.ood.srp.store.Store;
@@ -8,10 +7,12 @@ import ru.job4j.ood.srp.store.Store;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,11 +31,12 @@ public class XMLReport implements Report {
     public String generate(Predicate<Employee> filter) {
         String xml = "";
         try {
-            JAXBContext context = JAXBContext.newInstance(EmployeeForXML.class);
+            JAXBContext context = JAXBContext.newInstance(Employees.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
             try (StringWriter writer = new StringWriter()) {
-                Employees employees = new Employees();
+                Employees employees = new Employees(store.findBy(filter), format);
                 for (EmployeeForXML employee : employees.getEmployees()) {
                     marshaller.marshal(employee, writer);
                     xml = writer.getBuffer().toString();
@@ -46,13 +48,16 @@ public class XMLReport implements Report {
         return xml;
     }
 
-    @XmlRootElement(name = "employees")
+    @XmlRootElement(name =  "employee")
     public static class EmployeeForXML {
 
         private String name;
         private String hired;
         private String fired;
         private double salary;
+
+        public EmployeeForXML() {
+        }
 
         public EmployeeForXML(Employee employee, SimpleDateFormat format) {
             this.name = employee.getName();
@@ -94,14 +99,15 @@ public class XMLReport implements Report {
         }
     }
 
-    public static class Employees {
+        @XmlRootElement(name = "employees")
+        public static class Employees {
         private List<EmployeeForXML> employees;
 
         public Employees() {
         }
 
-        public Employees(List<EmployeeForXML> employees) {
-            this.employees = employees;
+        public Employees(List<Employee> employees, SimpleDateFormat format) {
+            this.employees = empToEmpXML(employees, format);
         }
 
         public List<EmployeeForXML> getEmployees() {
@@ -110,6 +116,14 @@ public class XMLReport implements Report {
 
         public void setEmployees(List<EmployeeForXML> employees) {
             this.employees = employees;
+        }
+
+        private List<EmployeeForXML> empToEmpXML(List<Employee> employees, SimpleDateFormat format) {
+            List<EmployeeForXML> rsl = new ArrayList<>();
+            for (Employee employee : employees) {
+                rsl.add(new EmployeeForXML(employee, format));
+            }
+            return rsl;
         }
     }
 }
