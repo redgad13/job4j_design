@@ -28,27 +28,28 @@ class XMLReportTest {
         store.add(worker2);
         Report engine = new XMLReport(store, parser);
         String expect = """
-                <?xml version="1.0" encoding UTF-8 standalone="yes"?>"
-                + "<employees>"
-                + "    <employee>"
-                + "        <name>Ivan</name>
-                + "        <hired>15:01:2020 01:11</hired>
-                + "        <fired>15:01:2021 01:11</fired>
-                + "        <salary>100.0</salary>
-                + "    </employee>"
-                + "<    employee>"
-                + "        <name>"Petr</name>
-                + "        <hired>16:02:2021 02:22</hired>
-                + "        <fired>15:01:2022 01:11</fired>
-                + "        <salary>200.0</salary>
-                + "    </employee>"
-                + "    <employee>"
-                + "        <name>Sergei</name>
-                + "        <hired>17:03:2022 03:03</hired>
-                + "        <fired>15:01:2023 01:11</fired>
-                + "        <salary>300.0</salary>
-                + "    </employee>"
-                + "</employees>""";
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <employees>
+                    <employee>
+                        <name>Ivan</name>
+                        <hired>15:01:2020 01:11</hired>
+                        <fired>15:01:2021 01:11</fired>
+                        <salary>100.0</salary>
+                    </employee>
+                    <employee>
+                        <name>Petr</name>
+                        <hired>16:02:2021 02:22</hired>
+                        <fired>15:01:2022 01:11</fired>
+                        <salary>200.0</salary>
+                    </employee>
+                    <employee>
+                        <name>Sergei</name>
+                        <hired>17:03:2022 03:03</hired>
+                        <fired>15:01:2023 01:11</fired>
+                        <salary>300.0</salary>
+                    </employee>
+                </employees>
+                """;
         assertThat(engine.generate(em -> true)).isEqualTo(expect);
     }
 }

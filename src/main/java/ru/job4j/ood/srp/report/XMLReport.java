@@ -7,8 +7,7 @@ import ru.job4j.ood.srp.store.Store;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -37,10 +36,8 @@ public class XMLReport implements Report {
             SimpleDateFormat format = new SimpleDateFormat("dd:MM:yyyy HH:mm");
             try (StringWriter writer = new StringWriter()) {
                 Employees employees = new Employees(store.findBy(filter), format);
-                for (EmployeeForXML employee : employees.getEmployees()) {
-                    marshaller.marshal(employee, writer);
+                    marshaller.marshal(employees, writer);
                     xml = writer.getBuffer().toString();
-                }
             }
         } catch (IOException | JAXBException e) {
             e.printStackTrace();
@@ -48,9 +45,8 @@ public class XMLReport implements Report {
         return xml;
     }
 
-    @XmlRootElement(name =  "employee")
+    @XmlType(propOrder = {"name", "hired", "fired", "salary"})
     public static class EmployeeForXML {
-
         private String name;
         private String hired;
         private String fired;
@@ -100,7 +96,10 @@ public class XMLReport implements Report {
     }
 
         @XmlRootElement(name = "employees")
+        @XmlAccessorType(XmlAccessType.FIELD)
         public static class Employees {
+
+        @XmlElement(name = "employee")
         private List<EmployeeForXML> employees;
 
         public Employees() {
