@@ -9,6 +9,6 @@ public class Trash extends AbstractStore {
 
     @Override
     public String execute() {
-        return food.getName() + "eliminating";
+        return food.getName() + " eliminating";
     }
 }
