@@ -16,7 +16,7 @@ class ControlQualityTest {
         Date createDateOrange = sdf.parse("01/06/2023");
         Date createDatePear = sdf.parse("01/09/2023");
         Date expDateApple = sdf.parse("01/07/2023");
-        Date expDateOrange= sdf.parse("01/12/2023");
+        Date expDateOrange = sdf.parse("01/12/2023");
         Date expDatePear = sdf.parse("01/07/2024");
         List<Food> fruits = List.of(
                 new Fruits("Apple", createDateApple, expDateApple),
