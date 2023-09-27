@@ -1,9 +1,10 @@
 package ru.job4j.ood.lsp.products;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Trash extends AbstractStore {
-    private List<Food> list;
+    private List<Food> list = new ArrayList<>();
 
     public Trash() { }
 
