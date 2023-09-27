@@ -8,6 +8,7 @@ public abstract class Food {
     private Date createDate;
     private double price;
     private int discount;
+    private double tillExpiry;
 
     public Food(String name, Date createDate, Date expiryDate) {
         this.name = name;
@@ -23,27 +24,35 @@ public abstract class Food {
         this.discount = discount;
     }
 
-    public String getName() {
+    protected String getName() {
         return name;
     }
 
-    public Date getExpiryDate() {
+    protected Date getExpiryDate() {
         return expiryDate;
     }
 
-    public Date getCreateDate() {
+    protected Date getCreateDate() {
         return createDate;
     }
 
-    public double getPrice() {
+    protected double getPrice() {
         return price;
     }
 
-    public int getDiscount() {
+    protected int getDiscount() {
         return discount;
     }
 
-    public void setPrice(double price) {
+    protected double getTillExpiry() {
+        return tillExpiry;
+    }
+
+    protected void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setTillExpiry(double tillExpiry) {
+        this.tillExpiry = tillExpiry;
     }
 }

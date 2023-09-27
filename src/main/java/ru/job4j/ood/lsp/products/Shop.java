@@ -1,14 +1,22 @@
 package ru.job4j.ood.lsp.products;
 
-public class Shop extends AbstractStore {
-    Food food;
+import java.util.List;
 
-    public Shop(Food food) {
-        this.food = food;
+public class Shop extends AbstractStore {
+    private List<Food> list;
+
+    public Shop() { }
+
+    public Shop(List<Food> list) {
+        this.list = list;
     }
 
     @Override
-    public String execute() {
-        return food.getName() + " is selling";
+    public void execute(List<Food> foods) {
+        for (Food food : foods) {
+            if (food.getTillExpiry() >= 0.25 && food.getTillExpiry() < 0.75) {
+                list.add(food);
+            }
+        }
     }
 }

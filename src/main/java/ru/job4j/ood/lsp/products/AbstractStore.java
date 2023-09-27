@@ -1,9 +1,8 @@
 package ru.job4j.ood.lsp.products;
 
-public abstract class AbstractStore {
-    Food food;
+import java.util.List;
 
-    public String execute() {
-        return food.getName();
+public abstract class AbstractStore implements Store {
+    protected void execute(List<Food> foods) {
     }
 }

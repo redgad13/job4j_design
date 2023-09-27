@@ -1,14 +1,22 @@
 package ru.job4j.ood.lsp.products;
 
-public class Trash extends AbstractStore {
-    Food food;
+import java.util.List;
 
-    public Trash(Food food) {
-        this.food = food;
+public class Trash extends AbstractStore {
+    private List<Food> list;
+
+    public Trash() { }
+
+    public Trash(List<Food> list) {
+        this.list = list;
     }
 
     @Override
-    public String execute() {
-        return food.getName() + " eliminating";
+    public void execute(List<Food> foods) {
+        for (Food food : foods) {
+            if (food.getTillExpiry() >= 0.75) {
+                list.add(food);
+            }
+        }
     }
 }
