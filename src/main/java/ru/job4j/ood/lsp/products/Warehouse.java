@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Warehouse extends AbstractStore {
-    private List<Food> list = new ArrayList<>();
-
     public Warehouse() { }
 
     public Warehouse(List<Food> list) {

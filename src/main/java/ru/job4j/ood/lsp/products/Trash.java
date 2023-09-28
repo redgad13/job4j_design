@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trash extends AbstractStore {
-    private List<Food> list = new ArrayList<>();
-
     public Trash() { }
 
     public Trash(List<Food> list) {
