@@ -6,6 +6,10 @@ import java.util.List;
 public abstract class AbstractStore implements Store {
     protected List<Food> list = new ArrayList<>();
 
-    protected void execute(List<Food> foods) {
+    public abstract void execute(List<Food> foods);
+
+    public List<Food> getFood() {
+        return list;
     }
+
 }

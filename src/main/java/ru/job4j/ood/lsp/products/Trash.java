@@ -1,6 +1,5 @@
 package ru.job4j.ood.lsp.products;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Trash extends AbstractStore {

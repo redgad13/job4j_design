@@ -4,16 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 public class ControlQuality {
-    private List<AbstractStore> stores;
+    private List<Store> stores;
 
-    public ControlQuality(List<AbstractStore> stores) {
+    public ControlQuality(List<Store> stores) {
         this.stores = stores;
     }
 
-    public List<AbstractStore> actionOnExpiryPercent(List<Food> foods, Date date) {
+    public List<Store> actionOnExpiryPercent(List<Food> foods, Date date) {
         BestBeforeDate bbd = new BestBeforeDate();
         List<Food> foodsWithDatesTillExpiry = bbd.findPercentTillExpiryDate(foods, date.getTime());
-        for (AbstractStore store : stores) {
+        for (Store store : stores) {
             store.execute(foodsWithDatesTillExpiry);
         }
         return stores;

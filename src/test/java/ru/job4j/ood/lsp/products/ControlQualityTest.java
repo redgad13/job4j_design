@@ -2,6 +2,8 @@ package ru.job4j.ood.lsp.products;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,13 +20,13 @@ class ControlQualityTest {
         Date expDateApple = sdf.parse("01/07/2023");
         Date expDateOrange = sdf.parse("01/12/2023");
         Date expDatePear = sdf.parse("01/07/2024");
-        List<Food> fruits = List.of(
-                new Fruits("Apple", createDateApple, expDateApple),
-                new Fruits("Orange", createDateOrange, expDateOrange),
-                new Fruits("Pear", createDatePear, expDatePear));
-        List<AbstractStore> stores = List.of(new Shop(), new Warehouse(), new Trash());
+        Food apple = new Fruits("Apple", createDateApple, expDateApple);
+        Food orange = new Fruits("Orange", createDateOrange, expDateOrange);
+        Food pear = new Fruits("Pear", createDatePear, expDatePear);
+        List<Food> fruits = List.of(apple, orange, pear);
+        List<Store> stores = List.of(new Shop(), new Warehouse(), new Trash());
         ControlQuality cq = new ControlQuality(stores);
-        cq.actionOnExpiryPercent(fruits, new Date());
-
+        List<Store> rsl = cq.actionOnExpiryPercent(fruits, new Date());
+        assertThat(rsl.get(0).getFood()).isEqualTo(List.of(orange));
     }
 }
