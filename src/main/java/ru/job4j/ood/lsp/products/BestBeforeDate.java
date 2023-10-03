@@ -10,7 +10,8 @@ public class BestBeforeDate {
         for (Food food : foods) {
             totalPeriod = food.getExpiryDate().getTime() - food.getCreateDate().getTime();
             leftPeriod = food.getExpiryDate().getTime() - currentDate;
-            food.setTillExpiry((double) leftPeriod / totalPeriod);
+            double percent = (double) 1L - ((double) leftPeriod / totalPeriod);
+            food.setTillExpiry(percent);
         }
         return foods;
     }

@@ -7,7 +7,7 @@ public class Fruits extends Food {
         super(name, createDate, expiryDate);
     }
 
-    public Fruits(String name, Date createDate, Date expiryDate, double price, int discount) {
+    public Fruits(String name, Date createDate, Date expiryDate, double price, double discount) {
         super(name, createDate, expiryDate, price, discount);
     }
 }

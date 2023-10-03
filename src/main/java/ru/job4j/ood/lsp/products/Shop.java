@@ -4,19 +4,16 @@ import java.util.List;
 
 public class Shop extends AbstractStore {
 
-    public Shop() {
-    }
-
-    public Shop(List<Food> list) {
-        this.list = list;
-    }
-
-      @Override
-    public void execute(List<Food> foods) {
+    @Override
+    public List<Food> execute(List<Food> foods) {
         for (Food food : foods) {
-            if (food.getTillExpiry() >= 0.25 && food.getTillExpiry() < 0.75) {
+            if (food.getTillExpiry() >= twentyFive && food.getTillExpiry() < seventyFive) {
+                list.add(food);
+            } else if (food.getTillExpiry() >= seventyFive && food.getTillExpiry() <= ninetyNine) {
+                food.setPrice(food.getPrice() - food.getPrice() * food.getDiscount());
                 list.add(food);
             }
         }
+        return list;
     }
 }

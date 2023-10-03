@@ -7,7 +7,7 @@ public abstract class Food {
     private Date expiryDate;
     private Date createDate;
     private double price;
-    private int discount;
+    private double discount;
     private double tillExpiry;
 
     public Food(String name, Date createDate, Date expiryDate) {
@@ -16,7 +16,7 @@ public abstract class Food {
         this.createDate = createDate;
     }
 
-    public Food(String name, Date createDate, Date expiryDate, double price, int discount) {
+    public Food(String name, Date createDate, Date expiryDate, double price, double discount) {
         this.name = name;
         this.expiryDate = expiryDate;
         this.createDate = createDate;
@@ -40,7 +40,7 @@ public abstract class Food {
         return price;
     }
 
-    protected int getDiscount() {
+    protected double getDiscount() {
         return discount;
     }
 
