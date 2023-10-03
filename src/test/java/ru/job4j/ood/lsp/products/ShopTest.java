@@ -41,7 +41,7 @@ class ShopTest {
         Date expDateOrange = sdf.parse("30/10/2023");
         Date expDateMilk = sdf.parse("01/07/2024");
         Food apple = new Fruits("Apple", createDateApple, expDateApple);
-        Food orange = new Fruits("Orange", createDateOrange, expDateOrange,100,0.2);
+        Food orange = new Fruits("Orange", createDateOrange, expDateOrange, 100, 0.2);
         Food milk = new Milk("Milk", createDateMilk, expDateMilk);
         Store shop = new Shop();
         List<Food> foods = List.of(apple, orange, milk);
