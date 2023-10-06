@@ -4,4 +4,6 @@ public interface Cell {
     boolean isAvailable();
 
     int getSize();
+
+    void setAvailability(boolean available);
 }
