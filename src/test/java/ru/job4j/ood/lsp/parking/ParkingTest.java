@@ -42,7 +42,7 @@ class ParkingTest {
         cells.add(cargoCell2);
         Parking parking = new Parking();
         Car passCar = new PassangerCar();
-        boolean rsl = parking.getNewCar(cells, passCar);
+        boolean rsl = parking.getNewPassCar(cells, passCar);
         assertThat(rsl).isTrue();
     }
 
@@ -62,7 +62,7 @@ class ParkingTest {
         Parking parking = new Parking();
         int passCarSize = new PassangerCar().getSize();
         Car cargoCar = new CargoCar(passCarSize, 2);
-        boolean rsl = parking.getNewCar(cells, cargoCar);
+        boolean rsl = parking.getNewCargoCar(cells, cargoCar);
         assertThat(rsl).isTrue();
     }
 
@@ -72,17 +72,13 @@ class ParkingTest {
         Cell passCell1 = new PassangerCell();
         Cell passCell2 = new PassangerCell();
         Cell passCell3 = new PassangerCell();
-        Cell cargoCell1 = new CargoCell(passCell1, 2);
-        Cell cargoCell2 = new CargoCell(passCell1, 2);
         cells.add(passCell1);
         cells.add(passCell2);
         cells.add(passCell3);
-        cells.add(cargoCell1);
-        cells.add(cargoCell2);
         Parking parking = new Parking();
         int passCarSize = new PassangerCar().getSize();
         Car cargoCar = new CargoCar(passCarSize, 2);
-        boolean rsl = parking.getNewCar(cells, cargoCar);
+        boolean rsl = parking.getNewCargoCar(cells, cargoCar);
         assertThat(rsl).isTrue();
     }
 
@@ -90,18 +86,13 @@ class ParkingTest {
     void getNewPassengerCarIsNotOkNoAvailableCells() {
         List<Cell> cells = new ArrayList<>();
         Cell passCell1 = new PassangerCell();
-        Cell passCell2 = new PassangerCell();
-        Cell passCell3 = new PassangerCell();
         Cell cargoCell1 = new CargoCell(passCell1, 2);
         Cell cargoCell2 = new CargoCell(passCell1, 2);
-        cells.add(passCell1);
-        cells.add(passCell2);
-        cells.add(passCell3);
         cells.add(cargoCell1);
         cells.add(cargoCell2);
         Parking parking = new Parking();
         Car passCar = new PassangerCar();
-        boolean rsl = parking.getNewCar(cells, passCar);
+        boolean rsl = parking.getNewPassCar(cells, passCar);
         assertThat(rsl).isFalse();
     }
 
@@ -109,19 +100,11 @@ class ParkingTest {
     void getNewCargoCarIsNotOkNoAvailableCells() {
         List<Cell> cells = new ArrayList<>();
         Cell passCell1 = new PassangerCell();
-        Cell passCell2 = new PassangerCell();
-        Cell passCell3 = new PassangerCell();
-        Cell cargoCell1 = new CargoCell(passCell1, 2);
-        Cell cargoCell2 = new CargoCell(passCell1, 2);
         cells.add(passCell1);
-        cells.add(passCell2);
-        cells.add(passCell3);
-        cells.add(cargoCell1);
-        cells.add(cargoCell2);
         Parking parking = new Parking();
         int passCarSize = new PassangerCar().getSize();
         Car cargoCar = new CargoCar(passCarSize, 2);
-        boolean rsl = parking.getNewCar(cells, cargoCar);
+        boolean rsl = parking.getNewCargoCar(cells, cargoCar);
         assertThat(rsl).isFalse();
     }
 }

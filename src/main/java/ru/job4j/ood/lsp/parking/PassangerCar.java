@@ -4,7 +4,7 @@ public class PassangerCar implements Car {
     static int size = 1;
 
     @Override
-    public boolean takeTheCell() {
+    public boolean takeTheCell(Cell cell) {
         return false;
     }
 

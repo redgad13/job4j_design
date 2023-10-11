@@ -8,7 +8,7 @@ public class CargoCar implements Car {
     }
 
     @Override
-    public boolean takeTheCell() {
+    public boolean takeTheCell(Cell cell) {
         return false;
     }
 
