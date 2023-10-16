@@ -10,7 +10,11 @@ public class SimpleMenu implements Menu {
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
         boolean rsl;
         Optional<ItemInfo> parentItem = findItem(parentName);
-        if (parentItem.isPresent()) {
+        if (parentItem.isEmpty()) {
+            MenuItem child = new SimpleMenuItem(childName, actionDelegate);
+            rootElements.add(child);
+            rsl = true;
+        } else if (parentItem.isPresent()) {
             MenuItem child = new SimpleMenuItem(childName, actionDelegate);
             parentItem.get().menuItem.getChildren().add(child);
             rsl = true;
@@ -35,7 +39,7 @@ public class SimpleMenu implements Menu {
     @Override
     public Iterator<MenuItemInfo> iterator() {
         DFSIterator dfsIterator = new DFSIterator();
-        return new Iterator<MenuItemInfo>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return dfsIterator.hasNext();
@@ -59,7 +63,7 @@ public class SimpleMenu implements Menu {
         Optional<ItemInfo> rsl = Optional.empty();
         while (dfsIterator.hasNext()) {
             ItemInfo current = dfsIterator.next();
-            if (name.equals(current.menuItem.getName())) {
+            if (current.menuItem.getName().equals(name)) {
                 rsl = Optional.of(current);
             }
         }
@@ -121,7 +125,7 @@ public class SimpleMenu implements Menu {
             String lastNumber = numbers.removeFirst();
             List<MenuItem> children = current.getChildren();
             int currentNumber = children.size();
-            for (var i = children.listIterator(children.size()); i.hasPrevious();) {
+            for (var i = children.listIterator(children.size()); i.hasPrevious(); ) {
                 stack.addFirst(i.previous());
                 numbers.addFirst(lastNumber.concat(String.valueOf(currentNumber--)).concat("."));
             }
