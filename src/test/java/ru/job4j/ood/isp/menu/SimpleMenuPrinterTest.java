@@ -1,8 +1,7 @@
 package ru.job4j.ood.isp.menu;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -15,7 +14,7 @@ class SimpleMenuPrinterTest {
     private ByteArrayOutputStream output = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
-    @Before
+    @BeforeEach
     public void setUpStreams() {
         System.setOut(new PrintStream(output));
     }
@@ -36,12 +35,12 @@ class SimpleMenuPrinterTest {
         menu.add("Купить продукты", "Купить молоко", action);
         SimpleMenuPrinter simpleMenuPrinter = new SimpleMenuPrinter();
         simpleMenuPrinter.print(menu);
-        String expected = """
-                1.Сходить в магазин
-                  1.1.Купить продукты
-                    1.1.1.Купить хлеб
-                    1.1.2.Купить молоко
-                2.Покормить собаку""";
+        String expected =
+                "1.Сходить в магазин" + "\r\n"
+                        + "  1.1.Купить продукты" + "\r\n"
+                        + "    1.1.1.Купить хлеб" + "\r\n"
+                        + "    1.1.2.Купить молоко" + "\r\n"
+                        + "2.Покормить собаку" + "\r\n";
         assertThat(expected).isEqualTo(output.toString());
     }
 }
