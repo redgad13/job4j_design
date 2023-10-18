@@ -32,7 +32,7 @@ public class TodoApp {
         System.out.println("добавить подпункт меню? да/нет");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String answer = br.readLine();
-            while ("yes".equals(answer)) {
+            while ("да".equals(answer)) {
                 addChild(child);
                 System.out.println("добавить еще подпункт да/нет");
                 answer = br.readLine();
