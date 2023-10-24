@@ -17,6 +17,7 @@ public class TodoApp {
             line = br.readLine();
             while (!line.equals("выход")) {
                 todoApp.addParent(line);
+                line = br.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
