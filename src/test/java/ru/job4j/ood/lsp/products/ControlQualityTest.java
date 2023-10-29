@@ -31,7 +31,7 @@ class ControlQualityTest {
     }
 
     @Test
-    void resort() throws ParseException{
+    void resort() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date createDateApple = sdf.parse("01/01/2023");
         Date createDateOrange = sdf.parse("01/06/2023");
