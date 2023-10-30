@@ -46,7 +46,7 @@ class ShopTest {
         Store shop = new Shop();
         List<Food> foods = List.of(apple, orange, milk);
         BestBeforeDate bbd = new BestBeforeDate();
-        List<Food> rsl = bbd.findPercentTillExpiryDate(foods, new Date().getTime());
+        List<Food> rsl = bbd.findPercentTillExpiryDate(foods, sdf.parse("20/10/2023").getTime());
         rsl = shop.execute(rsl);
         assertThat(rsl).isEqualTo(List.of(orange));
         assertThat(rsl.get(0).getPrice()).isEqualTo(80);
